@@ -9,18 +9,27 @@ const App = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    api.get('projects').then(response => {
-      setProjects(response.data);
-    }).catch(console.error);
+    (async () => {
+      try {
+        const response = await api.get('projects');
+        setProjects(response.data);
+      } catch (error) {
+        console.error(error)
+      }
+    })();
   }, []);
 
-  const handleAddProject = () => {
-    api.post('projects', {
-      title: `Novo projeto ${Date.now()}`,
-      owner: "Ricky Almeida",
-    }).then(response => {
+  const handleAddProject = async () => {
+    try {
+      const response = await api.post('projects', {
+        title: `Novo projeto ${Date.now()}`,
+        owner: "Ricky Almeida",
+      });
+
       setProjects([...projects, response.data]);
-    }).catch(console.error);
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (
