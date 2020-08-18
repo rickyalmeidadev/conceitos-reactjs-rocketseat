@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from './services/api';
 
 import Header from './components/Header';
 
@@ -7,8 +8,19 @@ import img from './assets/img.jpeg'
 const App = () => {
   const [projects, setProjects] = useState([]);
 
+  useEffect(() => {
+    api.get('projects').then(response => {
+      setProjects(response.data);
+    }).catch(console.error);
+  }, []);
+
   const handleAddProject = () => {
-    setProjects([...projects, `Novo projeto ${Date.now()}`]);
+    api.post('projects', {
+      title: `Novo projeto ${Date.now()}`,
+      owner: "Ricky Almeida",
+    }).then(response => {
+      setProjects([...projects, response.data]);
+    }).catch(console.error);
   };
 
   return (
@@ -26,7 +38,10 @@ const App = () => {
 
       <ul>
         {projects.map(project => (
-          <li key={project}>{project}</li>
+          <li key={project.id}>
+            <h2>{project.title}</h2>
+            <small>{project.owner}</small>
+          </li>
         ))}
       </ul>
 
