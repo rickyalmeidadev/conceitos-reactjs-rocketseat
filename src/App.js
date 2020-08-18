@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import Header from './components/Header';
 
+import img from './assets/img.jpeg'
+
 const App = () => {
   const [projects, setProjects] = useState([]);
 
@@ -18,6 +20,8 @@ const App = () => {
           <li>Contact</li>
         </ul>
       </Header>
+
+      <img width={320} src={img} alt="Computer"/>
 
 
       <ul>
